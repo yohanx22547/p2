@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<form action="/todos" method="POST" style="display: flex; gap: 8px; margin-bottom: 20px;">
+  <input type="text" name="title" placeholder="Add a new task..." required autocomplete="off">
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<div class="todo-list">
+  <% if (todos.length === 0) { %>
+    <p style="text-align: center; color: #6b7280;">No tasks found! Enjoy your day 🎉</p>
+  <% } else { %>
+    <% todos.forEach(todo => { %>
+      <div class="todo-item <%= todo.completed ? 'done' : '' %>">
+        <form action="/todos/<%= todo._id %>?_method=PUT" method="POST" style="display: inline;">
+          <input type="hidden" name="completed" value="<%= !todo.completed %>">
+          <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 18px;">
+            <%= todo.completed ? '✅' : '⬜' %>
+          </button>
+        </form>
+        
+        <span style="flex-grow: 1; margin: 0 12px;"><%= todo.title %></span>
+
+        <form action="/todos/<%= todo._id %>?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Delete</button>
+        </form>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

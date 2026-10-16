@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App (EJS + Express)</title>
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #f4f6f8; margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 600px; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
+    .btn { padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; text-decoration: none; font-size: 14px; }
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-danger { background: #ef4444; color: white; }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .todo-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #f0f0f0; }
+    .todo-item.done span { text-decoration: line-through; color: #9ca3af; }
+    .form-group { margin-bottom: 14px; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h2>📝 Task Manager</h2>
+      <% if (user) { %>
+        <div>
+          <span>Hi, <strong><%= user.username %></strong></span> | 
+          <a href="/auth/logout" class="btn btn-secondary">Logout</a>
+        </div>
+      <% } %>
+    </header>

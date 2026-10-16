@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Architecture & Decision Report</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 40px 20px; line-height: 1.6; }
+    .report-container { max-width: 900px; margin: 0 auto; }
+    h1 { color: #0f172a; border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+    .tab-buttons { display: flex; gap: 10px; margin: 20px 0; }
+    .tab-btn { padding: 10px 20px; border: none; background: #e2e8f0; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .tab-btn.active { background: var(--primary); color: white; }
+    .tab-content { display: none; background: var(--card-bg); padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .tab-content.active { display: block; }
+    .badge { background: #dbeafe; color: #1e40af; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<div class="report-container">
+  <h1>🚀 Todo App Architecture & Decision Report</h1>
+  <p>Summary Report on Technical Decisions, UX/UI Impacts, and System Security Design</p>
+
+  <div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('tech')">🛠️ Tech Decisions</button>
+    <button class="tab-btn" onclick="switchTab('uxui')">🎨 UX / UI Impact</button>
+    <button class="tab-btn" onclick="switchTab('security')">🛡️ Security & Auth Audit</button>
+  </div>
+
+  <!-- TAB 1: TECH DECISIONS -->
+  <div id="tech" class="tab-content active">
+    <h2>1. Database Selection: MongoDB</h2>
+    <p><b>Reasons for choosing:</b> The Task data structure is highly flexible, following a Document/JSON format that aligns with JavaScript. Using Mongoose allows for the rapid creation of schema validations.</p>
+
+    <h2>2. Backend Stack: Node.js + Express + EJS</h2>
+    <p><b>เหตุผลที่เลือก:</b></p>
+    <ul>
+      <li><b>Node.js & Express:</b> Lightweight, with easy customization of middleware for session and security.</li>
+      <li><b>EJS (Server-Side Rendering):</b> It reduces the redundancy of state management on the client side and renders HTML directly from the server, allowing even low-spec devices to process content quickly.</li>
+    </ul>
+  </div>
+
+  <!-- TAB 2: UX / UI IMPACT -->
+  <div id="uxui" class="tab-content">
+    <h2>⚡ How Back-end Addition Affected UX & UI</h2>
+    <p>Enhancing the back-end system positively impacts the user experience (UX/UI) in the following ways:</p>
+    <ul>
+      <li><b>Data Persistence (UX):</b> Previously, data would be lost whenever the page was refreshed; now, it is saved in MongoDB, allowing users to access their tasks at any time from any device.</li>
+      <li><b>Multi-User Isolation (UX):</b> A login system ensures that the UI displays only the specific user's personal data, enhancing privacy.</li>
+      <li><b>Form Redirection & Feedback (UI):</b> Submitting forms via Express and EJS helps manage state, allowing for clear error notifications (such as an incorrect password) to be displayed on the UI.</li>
+    </ul>
+  </div>
+
+  <!-- TAB 3: SECURITY AUDIT -->
+  <div id="security" class="tab-content">
+    <h2>🔒 Security Implementation</h2>
+    <ul>
+      <li><span class="badge">Password Security</span> Also, hash the passwords. <code>bcryptjs</code> (Salt Rounds = 12)</li>
+      <li><span class="badge">Session Protection</span> Setting <code>httpOnly: true</code> ใน Cookie ป้องกันการโจรกรรม Session ผ่าน XSS</li>
+      <li><span class="badge">Authorization Check</span> Protect IDOR by binding <code>user_id</code> Included in the query for every Update / Delete operation</li>
+      <li><span class="badge">XSS Escaping</span> EJS also performs automatic HTML escaping for variables. <code>&lt;%= %&gt;</code></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
